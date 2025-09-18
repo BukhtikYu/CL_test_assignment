@@ -25,7 +25,7 @@ development:
 
   # The TCP port the server listens on. Defaults to 5432.
   # If your server runs on a different port number, change accordingly.
-  #port: 5432
+  port: 5416
 
   # Schema search path. The server defaults to $user,public
   #schema_search_path: myapp,sharedapp,public
@@ -42,6 +42,7 @@ development:
 test:
   <<: *default
   database: cl_test_assignment_test
+  port: 5416
 
 # As with config/credentials.yml, you never want to store sensitive information
 # like your database password in the source code. If your source code is
