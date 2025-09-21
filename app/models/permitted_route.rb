@@ -14,4 +14,10 @@
 
 class PermittedRoute < ApplicationRecord
   validates :carrier, :origin_iata, :destination_iata, presence: true
+
+  scope :for_trip, ->(carrier:, origin:, destination:) {
+    where(carrier: carrier, origin_iata: origin, destination_iata: destination)
+  }
+  scope :direct, -> { where(direct: true) }
+  scope :with_transfer, -> { where(direct: false) }
 end
