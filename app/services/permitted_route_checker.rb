@@ -5,6 +5,16 @@ class PermittedRouteChecker
     @destination = destination_iata
   end
 
+  def routes
+    @routes ||= PermittedRoute.for_trip(
+      carrier: @carrier,
+      origin: @origin,
+      destination: @destination
+    )
+  end
+
+  private
+
   def direct_routes_allowed?
     routes.direct.exists?
   end
@@ -15,14 +25,6 @@ class PermittedRouteChecker
 
   def all_transfer_codes
     transfer_codes(routes)
-  end
-
-  def routes
-    @routes ||= PermittedRoute.for_trip(
-      carrier: @carrier,
-      origin: @origin,
-      destination: @destination
-    )
   end
 
   def transfer_codes(scope)
