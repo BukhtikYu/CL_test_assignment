@@ -14,18 +14,12 @@ class RouteSearchService
   end
 
   def call
-    permitted_routes = PermittedRouteChecker.new(
-      carrier: @carrier,
-      origin_iata: @origin,
-      destination_iata: @destination
-    ).routes
-    
     # Cache direct routes to avoid repeated queries
     @direct_routes = nil
     @direct_routes_used = false
     
     results = []
-    permitted_routes.find_each do |route|
+    routes.find_each do |route|
       if route.direct && !@direct_routes_used
         @direct_routes = build_direct_routes
         @direct_routes_used = true
@@ -40,6 +34,14 @@ class RouteSearchService
   end
 
   private
+
+  def routes
+    @routes ||= PermittedRouteChecker.new(
+      carrier: @carrier,
+      origin_iata: @origin,
+      destination_iata: @destination
+    ).routes
+  end
 
   def build_direct_routes
     @segment_finder
